@@ -7,22 +7,22 @@ pipeline {
   }
 
   tools {
-    sonarScanner 'SonarScanner' // Sesuai nama di Global Tool Configuration
+    sonarScanner 'SonarScanner' // Nama harus sama seperti di Global Tool Configuration Jenkins
   }
 
   stages {
-    stage('Install') {
+    stage('Install Dependencies') {
       steps {
         sh 'composer install'
       }
     }
 
-    stage('SAST with SonarQube') {
+    stage('Static Code Analysis (SAST)') {
       environment {
         SONAR_USER_HOME = "${env.WORKSPACE}/.sonar"
       }
       steps {
-        withSonarQubeEnv('Sonarqube') {
+        withSonarQubeEnv('SonarQube') {
           sh "${tool 'SonarScanner'}/bin/sonar-scanner"
         }
       }
