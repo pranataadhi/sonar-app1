@@ -1,10 +1,20 @@
 pipeline {
   agent any
-
   stages {
-    stage('Test') {
+    stage('Install') {
       steps {
-        echo 'Pipeline works!'
+        sh 'composer install'
+      }
+    }
+    stage('SAST with SonarQube') {
+      environment {
+        SONAR_USER_HOME = "${env.WORKSPACE}/.sonar"
+        scannerHome = tool 'SonarScanner'
+      }
+      steps {
+        withSonarQubeEnv('SonarQube') {
+          sh "${scannerHome}/bin/sonar-scanner"
+        }
       }
     }
   }
