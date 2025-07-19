@@ -1,16 +1,11 @@
 pipeline {
-  agent {
-    docker {
-      image 'php:8.2'
-      args '-u root:root'
-    }
-  }
+  agent any
 
   stages {
-    stage('Install Composer') {
+    stage('Install PHP & Composer') {
       steps {
         sh '''
-          apt-get update && apt-get install -y unzip curl git
+          which php || (apt update && apt install -y php-cli unzip curl git)
           curl -sS https://getcomposer.org/installer | php
           mv composer.phar /usr/local/bin/composer
           composer --version
