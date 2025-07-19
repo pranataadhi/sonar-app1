@@ -2,14 +2,14 @@ pipeline {
   agent any
 
   stages {
-    stage('Install Composer') {
+    stage('Install Composer & PHP Extension') {
       steps {
         sh '''
-          which composer || (
-            apt update && apt install -y curl php-cli unzip git
-            curl -sS https://getcomposer.org/installer | php
-            mv composer.phar /usr/local/bin/composer
-          )
+          apt update
+          apt install -y php-cli php-xml unzip curl git
+
+          curl -sS https://getcomposer.org/installer | php
+          mv composer.phar /usr/local/bin/composer
           composer --version
         '''
       }
@@ -26,7 +26,7 @@ pipeline {
         SONAR_USER_HOME = "${env.WORKSPACE}/.sonar"
       }
       steps {
-        withSonarQubeEnv('Sonarqube') {
+        withSonarQubeEnv('SonarQube') {
           sh 'sonar-scanner'
         }
       }
