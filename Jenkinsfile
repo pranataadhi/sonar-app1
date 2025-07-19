@@ -1,19 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'php:8.2'
-      args '-u root:root'
-    }
-  }
-
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '5'))
-    timestamps()
-  }
-
-  tools {
-    sonarScanner 'SonarScanner'
-  }
+  agent any
 
   stages {
     stage('Install Composer') {
@@ -32,13 +18,13 @@ pipeline {
       }
     }
 
-    stage('Static Code Analysis (SAST)') {
+    stage('SAST with SonarQube') {
       environment {
         SONAR_USER_HOME = "${env.WORKSPACE}/.sonar"
       }
       steps {
         withSonarQubeEnv('SonarQube') {
-          sh "${tool 'SonarScanner'}/bin/sonar-scanner"
+          sh 'sonar-scanner'  // Tidak perlu define tools di atas
         }
       }
     }
