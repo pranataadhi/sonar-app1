@@ -1,8 +1,8 @@
 pipeline {
   agent {
     docker {
-      image 'php:8.2'        // Menggunakan Docker image resmi PHP
-      args '-u root:root'    // Jalankan sebagai root agar bisa install tools
+      image 'php:8.2'
+      args '-u root:root'
     }
   }
 
@@ -12,7 +12,7 @@ pipeline {
   }
 
   tools {
-    sonarScanner 'SonarScanner' // Sesuaikan dengan nama di Global Tool Configuration Jenkins
+    sonarScanner 'SonarScanner'
   }
 
   stages {
