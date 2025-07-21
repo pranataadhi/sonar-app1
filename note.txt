@@ -1,1 +1,1 @@
-berhasil trivy tinggal lanjut deploy
+berhasil trivy tinggal lanjut de
